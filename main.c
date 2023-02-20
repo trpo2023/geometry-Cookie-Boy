@@ -122,9 +122,9 @@ void fillString(char* string, char* name)
 int main(int argc, char* argv[])
 {
     if (argv[1] == NULL) {
-        printf("The input is a file with format lines: circle(point, "
-               "number)\n");
-        return 0;
+        printf("The input is a file with format lines: circle(point, number)");
+        printf("\n");
+        return 1;
     }
     FILE* file = fopen(argv[1], "r");
     char line[255];
@@ -145,9 +145,11 @@ int main(int argc, char* argv[])
                 fillString(line, structure[j].name);
                 j++;
             } else {
+                printf("\n");
                 return 1;
             }
         } else {
+            printf("\n");
             return 1;
         }
     }
