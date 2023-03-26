@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     else
     {
         char temp[10];
-        itoa(j + 1, temp, 10);
+        sprintf(temp, "%d", j + 1);
         printf("%d. %s", j + 1, line);
         addSpaces(strlen(temp) + 2);
         printf("%s", errmsg);

@@ -1,5 +1,6 @@
 #include "handler.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -26,7 +27,7 @@ void fillErrorString(char *string, int index, char *expect)
         second = ": unexpected token";
     else
         second = ": expected '";
-    itoa(index, value, 10);
+    sprintf(value, "%d", index);
 
     for (int i = 0; i < strlen(first); i++, j++)
         string[j] = first[i];
