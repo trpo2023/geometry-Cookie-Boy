@@ -16,7 +16,14 @@ int main(int argc, char *argv[])
         printf("The input is a file with format lines: 'circle(point, number)' or 'triangle((point, point, point, point))'\n");
         return 1;
     }
+
     FILE *file = fopen(argv[1], "r");
+    if (file == NULL)
+    {
+        printf("Error! Failed to open file!\n");
+        return 1;
+    }
+
     Figure figures[MIN_ELEMENTS];
     char line[MAX_ELEMENTS];
     char errmsg[MAX_ELEMENTS];

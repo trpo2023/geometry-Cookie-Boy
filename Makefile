@@ -10,11 +10,11 @@ LIB_DIR = src/libapp
 
 APP_PATH = $(BIN_DIR)/$(NAME_APP)
 
-APP_SRC = $(wildcard $(APP_DIR)/*.c) # Все файлы с расширением .c нужно найти в текущей директории
+APP_SRC = $(wildcard $(APP_DIR)/*.c) # Р’СЃРµ С„Р°Р№Р»С‹ СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј .c РЅСѓР¶РЅРѕ РЅР°Р№С‚Рё РІ С‚РµРєСѓС‰РµР№ РґРёСЂРµРєС‚РѕСЂРёРё
 LIB_SRC = $(wildcard $(LIB_DIR)/*.c)
-APP_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(APP_SRC)) # Из .c заменяет в .o, SRC - какой список файлов
+APP_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(APP_SRC)) # РР· .c Р·Р°РјРµРЅСЏРµС‚ РІ .o, SRC - РєР°РєРѕР№ СЃРїРёСЃРѕРє С„Р°Р№Р»РѕРІ
 LIB_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(LIB_SRC))
-APP_DEPS = $(patsubst $(APP_OBJ), $(OBJ_DIR)/%.d, $(APP_OBJ)) # Из .o заменяет в .d
+APP_DEPS = $(patsubst $(APP_OBJ), $(OBJ_DIR)/%.d, $(APP_OBJ)) # РР· .o Р·Р°РјРµРЅСЏРµС‚ РІ .d
 LIB_DEPS = $(patsubst $(LIB_OBJ), $(OBJ_DIR)/%.d, $(LIB_OBJ))
 
 all: $(APP_PATH)
