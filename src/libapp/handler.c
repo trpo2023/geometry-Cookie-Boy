@@ -1,9 +1,57 @@
-#include "handler.h"
 #include <ctype.h>
+#include <handler.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+double circlePerimeter(double* coords)
+{
+    return 2 * M_PI * coords[2];
+}
+
+double trianglePerimeter(double* coords)
+{
+    int n = MIN_ELEMENTS - 2; // 8, т.к. расположены в виде [x1, y1, x2, y2...]
+    if ((coords[0] != coords[n - 2]) || (coords[1] != coords[n - 1])) {
+        return -1;
+    }
+
+    double sum = 0;
+    for (int i = 2; i < n - 1; i += 2) {
+        sum
+                += sqrt(pow((coords[i] - coords[i - 2]), 2)
+                        + pow((coords[i + 1] - coords[i - 1]), 2));
+    }
+    return sum;
+}
+
+double circleArea(double* coords)
+{
+    return M_PI * (coords[2] * coords[2]);
+}
+
+double triangleArea(double* coords, double halfPerimeter)
+{
+    int n = MIN_ELEMENTS - 2;
+    if ((coords[0] != coords[n - 2]) || (coords[1] != coords[n - 1]))
+        return -1;
+
+    double prod = halfPerimeter;
+    for (int i = 2; i < n - 1; i += 2)
+        prod *= halfPerimeter
+                - sqrt(pow((coords[i] - coords[i - 2]), 2)
+                       + pow((coords[i + 1] - coords[i - 1]), 2));
+
+    return sqrt(prod);
+}
+
+void addSpaces(int n)
+{
+    for (int i = 0; i < n; i++)
+        printf(" ");
+}
 
 void skipSpaces(char* string, Figure* figure, int* n)
 {

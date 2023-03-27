@@ -4,6 +4,7 @@
 #define MIN_ELEMENTS 10
 #define CIRCLE_START 6
 #define TRIANGLE_START 8
+#define _USE_MATH_DEFINES // M_PI in math.h
 
 typedef struct {
     int figureType;
@@ -12,6 +13,12 @@ typedef struct {
     int intersects[MIN_ELEMENTS];
 } Figure;
 
+double circlePerimeter(double*);
+double trianglePerimeter(double*);
+double circleArea(double*);
+double triangleArea(double*, double);
+
+void addSpaces(int);
 void skipSpaces(char*, Figure*, int*);
 void fillErrorString(char*, int, char*);
 double getValue(char*, int*, Figure*, char, char*);

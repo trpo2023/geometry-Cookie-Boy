@@ -3,12 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void addSpaces(int n)
-{
-    for (int i = 0; i < n; i++)
-        printf(" ");
-}
-
 int main(int argc, char* argv[])
 {
     if (argv[1] == NULL) {
@@ -29,7 +23,7 @@ int main(int argc, char* argv[])
     errmsg[0] = '\0';
     int j = 0;
 
-    while (fgets(line, 255, file) != 0) {
+    while (fgets(line, MAX_ELEMENTS, file) != 0) {
         if (line[strlen(line) - 1] != '\n') // Для последней строки
         {
             int length = strlen(line);
@@ -46,10 +40,24 @@ int main(int argc, char* argv[])
     }
 
     if (strlen(errmsg) == 0) {
-        for (int i = 0; i < j; i++)
+        for (int i = 0; i < j; i++) {
             printf("%d. %s\n", i + 1, figures[i].name);
+            double perimeter;
+            switch (figures[i].figureType) {
+            case 0:
+                perimeter = circlePerimeter(figures[i].coords);
+                printf("\tperimeter = %.3lf\n", perimeter);
+                printf("\tarea = %.3lf\n", circleArea(figures[i].coords));
+                break;
+            case 1:
+                perimeter = trianglePerimeter(figures[i].coords);
+                printf("\tperimeter = %.3lf\n", perimeter);
+                printf("\tarea = %.3lf\n",
+                       triangleArea(figures[i].coords, perimeter / 2));
+            }
+        }
     } else {
-        char temp[10];
+        char temp[MIN_ELEMENTS];
         sprintf(temp, "%d", j + 1);
         printf("%d. %s", j + 1, line);
         addSpaces(strlen(temp) + 2);
