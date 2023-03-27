@@ -20,11 +20,11 @@ LIB_DEPS = $(patsubst $(LIB_OBJ), $(OBJ_DIR)/%.d, $(LIB_OBJ))
 all: $(APP_PATH)
 
 $(APP_PATH): $(LIB_OBJ) $(APP_OBJ)
-	gcc $^ -o $@
+	gcc -I $(LIB_DIR) $^ -o $@
 
 $(OBJ_DIR)/%.o: %.c
 #	$(warning I am here)
-	gcc $(CFLAGS) $(DEPSFLAGS) -c $< -o $@
+	gcc $(CFLAGS) $(DEPSFLAGS) -I $(LIB_DIR) -c $< -o $@
 
 clean:
 	rm $(APP_PATH) $(OBJ_DIR)/$(APP_DIR)/*.* $(OBJ_DIR)/$(LIB_DIR)/*.*

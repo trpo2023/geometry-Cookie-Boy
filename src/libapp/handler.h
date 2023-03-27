@@ -1,5 +1,5 @@
-#ifndef handler_H
-#define handler_H
+#ifndef HANDLER_H
+#define HANDLER_H
 #define MAX_ELEMENTS 255
 #define MIN_ELEMENTS 10
 #define CIRCLE_START 6
