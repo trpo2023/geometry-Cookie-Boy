@@ -1,4 +1,5 @@
 NAME_APP = app
+LIB_NAME = libapp.a
 
 CFLAGS = -Wall -Werror
 DEPSFLAGS = -MMD
@@ -9,6 +10,7 @@ APP_DIR = src/app
 LIB_DIR = src/libapp
 
 APP_PATH = $(BIN_DIR)/$(NAME_APP)
+LIB_PATH = $(OBJ_DIR)/$(LIB_DIR)/$(LIB_NAME)
 
 APP_SRC = $(wildcard $(APP_DIR)/*.c) # Все файлы с расширением .c нужно найти в текущей директории
 LIB_SRC = $(wildcard $(LIB_DIR)/*.c)
@@ -19,11 +21,13 @@ LIB_DEPS = $(patsubst $(LIB_OBJ), $(OBJ_DIR)/%.d, $(LIB_OBJ))
 
 all: $(APP_PATH)
 
-$(APP_PATH): $(LIB_OBJ) $(APP_OBJ)
+$(APP_PATH): $(APP_OBJ) $(LIB_PATH)
 	gcc -I $(LIB_DIR) $^ -o $@ -lm
 
+$(LIB_PATH): $(LIB_OBJ)
+	ar rcs $@ $^
+
 $(OBJ_DIR)/%.o: %.c
-#	$(warning I am here)
 	gcc $(CFLAGS) $(DEPSFLAGS) -I $(LIB_DIR) -c $< -o $@ -lm
 
 clean:
