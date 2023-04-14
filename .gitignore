@@ -4,3 +4,4 @@ obj/src/app/app.o
 obj/src/libapp/handler.d
 obj/src/libapp/handler.o
 obj/src/libapp/libapp.a
+.vscode
