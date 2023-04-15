@@ -47,20 +47,48 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < j; i++)
         {
+            int el = 0;
             printf("%d. %s\n", i + 1, figures[i].name);
             double perimeter;
-            switch (figures[i].figureType)
+            if (!strcmp(figures[i].type, "circle"))
             {
-            case 0:
                 perimeter = circlePerimeter(figures[i].coords);
                 printf("\tperimeter = %.3lf\n", perimeter);
                 printf("\tarea = %.3lf\n", circleArea(figures[i].coords));
-                break;
-            case 1:
+                printf("\tintersects:\n");
+                if (getIntersections(figures, i, j))
+                {
+                    while (figures[i].intersects[el])
+                    {
+                        printf("\t  %d. %s\n", figures[i].intersects[el], figures[figures[i].intersects[el] - 1].type);
+                        el++;
+                    }
+                }
+                else
+                {
+                    printf("\t  None\n");
+                }
+            }
+            else if (!strcmp(figures[i].type, "triangle"))
+            {
                 perimeter = trianglePerimeter(figures[i].coords);
                 printf("\tperimeter = %.3lf\n", perimeter);
                 printf("\tarea = %.3lf\n", triangleArea(figures[i].coords, perimeter / 2));
+                printf("\tintersects:\n");
+                if (getIntersections(figures, i, j))
+                {
+                    while (figures[i].intersects[el])
+                    {
+                        printf("\t  %d. %s\n", figures[i].intersects[el], figures[figures[i].intersects[el] - 1].type);
+                        el++;
+                    }
+                }
+                else
+                {
+                    printf("\t  None\n");
+                }
             }
+            printf("\n");
         }
     }
     else

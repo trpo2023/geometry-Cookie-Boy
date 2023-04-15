@@ -7,41 +7,178 @@
 
 #include <handler.h>
 
-double circlePerimeter(double *coords)
+int max(int a, int b)
 {
-    return 2 * M_PI * coords[2];
+    if (a > b)
+        return a;
+    return b;
 }
 
-double trianglePerimeter(double *coords)
+int min(int a, int b)
 {
-    int n = MIN_ELEMENTS - 2; // 8, т.к. расположены в виде [x1, y1, x2, y2...]
-    if ((coords[0] != coords[n - 2]) || (coords[1] != coords[n - 1]))
+    if (a < b)
+        return a;
+    return b;
+}
+
+int area(Coords a, Coords b, Coords c) 
+{
+	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+}
+ 
+bool intersect_1(int a, int b, int c, int d) {
+	if (a > b)
+    {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    if (c > d)
+    {
+        int temp = c;
+        c = d;
+        d = temp;
+    }
+	return max(a, c) <= min(b, d);
+}
+
+bool differentFigures(Figure current, Figure figure)
+{
+    Coords *circleCoords, *triangleCoords;
+    if (!strcmp(current.type, "circle"))
+    {
+        circleCoords = current.coords;
+        triangleCoords = figure.coords;
+    }
+    else if (!strcmp(current.type, "triangle"))
+    {
+        circleCoords = figure.coords;
+        triangleCoords = current.coords;
+    }
+
+    for (int i = 1; i < MAX_COORDS; i++)
+    {
+        Coords AB, OB;
+        AB.x = triangleCoords[i].x - triangleCoords[i - 1].x;
+        AB.y = triangleCoords[i].y - triangleCoords[i - 1].y;
+        OB.x = triangleCoords[i].x - circleCoords[0].x;
+        OB.y = triangleCoords[i].y - circleCoords[0].y;
+        double AB_OB = (OB.x * OB.y) + (AB.x * AB.y);
+        double AB_2 = AB.x * AB.x + AB.y * AB.y;
+        double OB_2 = OB.x * OB.x + OB.y * OB.y;
+        double t = (AB_OB + sqrt((AB_OB * AB_OB) - (AB_2 * (OB_2 - (circleCoords[0].radius * circleCoords[0].radius))))) / AB_2;
+
+        double t_2 = (AB_OB - sqrt((AB_OB * AB_OB) - (AB_2 * (OB_2 - (circleCoords[0].radius * circleCoords[0].radius))))) / AB_2;
+        
+        // printf("%f | %f\n", t, triangleCoords[i].x);
+        // printf("%f | %f\n", t_2, triangleCoords[i].x);
+
+        if (((t > 0) && (t < 1)) || ((t_2 > 0) && (t_2 < 1)))
+            return true;
+    }
+    return false;
+}
+
+bool similarFigures(Figure current, Figure figure)
+{
+    Coords *f_coords = current.coords;
+    Coords *s_coords = figure.coords;
+    if (!strcmp(current.type, "circle"))
+    {
+        double length = sqrt(pow(abs((f_coords[0].x - s_coords[0].x)), 2) + pow(abs((f_coords[0].y - s_coords[0].y)), 2));
+        double r_sum = f_coords[0].radius + s_coords[0].radius;
+        return length < r_sum;
+    }
+    else if (!strcmp(current.type, "triangle"))
+    {
+        for (int i = 0; i < MAX_COORDS - 1; i++)
+        {
+            Coords a = current.coords[i];
+            Coords b = current.coords[i + 1];
+            for (int j = 0; j < MAX_COORDS - 1; j++)
+            {
+                Coords c = figure.coords[j];
+                Coords d = figure.coords[j + 1];
+                if (intersect_1 (a.x, b.x, c.x, d.x) && intersect_1 (a.y, b.y, c.y, d.y) && (area(a,b,c) * area(a,b,d) <= 0) && (area(c,d,a) * area(c,d,b) <= 0))
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int getIntersections(Figure *figures, int current, int total)
+{
+    char *currentType = figures[current].type;
+    int j = 0;
+
+    for (int i = 0; i < total; i++)
+    {
+        if (i != current)
+        {
+            char *figureType = figures[i].type;
+            if (!strcmp(currentType, figureType))
+            {
+                if (similarFigures(figures[current], figures[i]))
+                {
+                    figures[current].intersects[j] = i + 1;
+                    j++;
+                }
+            }
+            else
+            {
+                if (differentFigures(figures[current], figures[i]))
+                {
+                    figures[current].intersects[j] = i + 1;
+                    j++; 
+                }
+            }
+        }
+    }
+    figures[current].intersects[j] = 0;
+    return j;
+}
+
+double circlePerimeter(Coords *coords)
+{
+    return 2 * M_PI * coords[0].radius;
+}
+
+double trianglePerimeter(Coords *coords)
+{
+    int n = MAX_COORDS;
+    if ((coords[0].x != coords[n - 1].x) || (coords[0].y != coords[n - 1].y))
     {
         return -1;
     }
 
     double sum = 0;
-    for (int i = 2; i < n - 1; i += 2)
+    for (int i = 1; i < n; i++)
     {
-        sum += sqrt(pow((coords[i] - coords[i - 2]), 2) + pow((coords[i + 1] - coords[i - 1]), 2));
+        sum += sqrt(pow((coords[i].x - coords[i - 1].x), 2) + pow((coords[i].y - coords[i - 1].y), 2));
     }
+
     return sum;
 }
 
-double circleArea(double *coords)
+double circleArea(Coords *coords)
 {
-    return M_PI * (coords[2] * coords[2]);
+    return M_PI * (coords[0].radius * coords[0].radius);
 }
 
-double triangleArea(double *coords, double halfPerimeter)
+double triangleArea(Coords *coords, double halfPerimeter)
 {
-    int n = MIN_ELEMENTS - 2;
-    if ((coords[0] != coords[n - 2]) || (coords[1] != coords[n - 1]))
+    int n = MAX_COORDS;
+    if ((coords[0].x != coords[n - 1].x) || (coords[0].y != coords[n - 1].y))
+    {
         return -1;
+    }
 
     double prod = halfPerimeter;
-    for (int i = 2; i < n - 1; i += 2)
-        prod *= halfPerimeter - sqrt(pow((coords[i] - coords[i - 2]), 2) + pow((coords[i + 1] - coords[i - 1]), 2));
+    for (int i = 1; i < n; i++)
+    {
+        prod *= halfPerimeter - sqrt(pow((coords[i].x - coords[i - 1].x), 2) + pow((coords[i].y - coords[i - 1].y), 2));
+    }
 
     return sqrt(prod);
 }
@@ -146,6 +283,7 @@ int circleHandler(char *string, Figure *figure, char *errmsg)
     char *elements = "( ,)";
     int i = CIRCLE_START; // т.к. "circle"
     int j = 0;
+    int count = 0;
 
     skipSpaces(string, figure, &i);
     if (string[i] != elements[0])
@@ -162,8 +300,22 @@ int circleHandler(char *string, Figure *figure, char *errmsg)
         double value = getValue(string, &i, figure, elements[el], errmsg);
         if (strlen(errmsg) == 0)
         {
-            figure->coords[j] = value;
-            j++;
+            if (!count)
+            {
+                figure->coords[j].x = value;
+                count++;
+            }
+            else if (count == 1)
+            {
+                figure->coords[j].y = value;
+                count++;
+            }
+            else if (count == 2)
+            {
+                figure->coords[j].radius = value;
+                j++;
+                count++;
+            }
         }
         else
         {
@@ -186,6 +338,7 @@ int triangleHandler(char *string, Figure *figure, char *errmsg)
     char *elements = "(( , , , ))";
     int i = TRIANGLE_START; // т.к. "triangle"
     int j = 0;
+    bool isX = true;
 
     if (string[i] != elements[0])
     {
@@ -208,8 +361,19 @@ int triangleHandler(char *string, Figure *figure, char *errmsg)
         double value = getValue(string, &i, figure, elements[el], errmsg);
         if (strlen(errmsg) == 0)
         {
-            figure->coords[j] = value;
-            j++;
+            if (isX)
+            {
+                figure->coords[j].x = value;
+                isX = false;
+                printf("%f\n", figure->coords[j].x);
+            }
+            else
+            {
+                figure->coords[j].y = value;
+                isX = true;
+                printf("%f\n", figure->coords[j].y);
+                j++;
+            }
         }
         else
         {
@@ -243,7 +407,7 @@ int stringHandler(char *string, Figure *figure, char *errmsg)
         figure->name[i] = '\0';
         if (!strcmp(figure->name, "circle"))
         {
-            figure->figureType = 0;
+            strcpy(figure->type, "circle");
             i = circleHandler(string, figure, errmsg);
             figure->name[i] = '\0';
             if (strlen(errmsg) != 0)
@@ -252,7 +416,7 @@ int stringHandler(char *string, Figure *figure, char *errmsg)
         }
         if (!strcmp(figure->name, "triangle"))
         {
-            figure->figureType = 1;
+            strcpy(figure->type, "triangle");
             i = triangleHandler(string, figure, errmsg);
             figure->name[i] = '\0';
             if (strlen(errmsg) != 0)

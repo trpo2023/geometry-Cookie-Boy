@@ -4,20 +4,34 @@
 #define MIN_ELEMENTS 10
 #define CIRCLE_START 6
 #define TRIANGLE_START 8
+#define MAX_COORDS 4
 #define _USE_MATH_DEFINES // M_PI in math.h
+
+#include <stdbool.h>
 
 typedef struct
 {
-    int figureType;
+    double x;
+    double y;
+    double radius;
+} Coords;
+
+
+typedef struct
+{
     char name[MAX_ELEMENTS];
-    double coords[MIN_ELEMENTS];
+    char type[MIN_ELEMENTS];
+    Coords coords[MAX_COORDS];
     int intersects[MIN_ELEMENTS];
 } Figure;
 
-double circlePerimeter(double *);
-double trianglePerimeter(double *);
-double circleArea(double *);
-double triangleArea(double *, double);
+bool similarFigures(Figure, Figure);
+int getIntersections(Figure *, int, int);
+
+double circlePerimeter(Coords *);
+double trianglePerimeter(Coords *);
+double circleArea(Coords *);
+double triangleArea(Coords *, double);
 
 void addSpaces(int);
 void skipSpaces(char *, Figure *, int *);
