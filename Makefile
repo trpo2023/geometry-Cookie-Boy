@@ -1,5 +1,6 @@
 NAME_APP = app
 LIB_NAME = libapp.a
+INPUT_FILE = data
 
 CFLAGS = -Wall -Werror
 DEPSFLAGS = -MMD
@@ -32,6 +33,10 @@ $(OBJ_DIR)/%.o: %.c
 
 clean:
 	rm $(APP_PATH) $(OBJ_DIR)/$(APP_DIR)/*.* $(OBJ_DIR)/$(LIB_DIR)/*.*
+
+run: 
+	$(BIN_DIR)/$(NAME_APP) $(INPUT_FILE)
+
 
 -include $(LIB_DEPS) $(APP_DEPS)
 
