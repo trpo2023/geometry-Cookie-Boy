@@ -1,7 +1,7 @@
 bin/app
-obj/src/app/app.d
-obj/src/app/app.o
-obj/src/libapp/handler.d
-obj/src/libapp/handler.o
-obj/src/libapp/libapp.a
+obj/src/app/*.d
+obj/src/app/*.o
+obj/src/libapp/*.d
+obj/src/libapp/*.o
+obj/src/libapp/*.a
 .vscode
