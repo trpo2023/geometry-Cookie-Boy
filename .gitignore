@@ -1,7 +1,3 @@
-bin/app
-obj/src/app/*.d
-obj/src/app/*.o
-obj/src/libapp/*.d
-obj/src/libapp/*.o
-obj/src/libapp/*.a
+bin
+obj
 .vscode
