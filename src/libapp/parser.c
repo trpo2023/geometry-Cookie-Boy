@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <parser.h>
-#include <lexer.h>
 #include <calculations.h>
 #include <intersections.h>
+#include <lexer.h>
+#include <parser.h>
 
 int readFile(char *fileName, Figure *figures, char *errmsg)
 {
@@ -53,14 +53,16 @@ void printFigures(Figure *figures, int n)
         {
             printf("\tperimeter = %.3lf\n", circlePerimeter(figures[i].coords));
             printf("\tarea = %.3lf\n", circleArea(figures[i].coords));
-            printf("\tintersects:\n"); printIntersections(figures, i, n);
+            printf("\tintersects:\n");
+            printIntersections(figures, i, n);
         }
         else if (!strcmp(figures[i].type, "triangle"))
         {
             double perimeter = trianglePerimeter(figures[i].coords);
             printf("\tperimeter = %.3lf\n", perimeter);
             printf("\tarea = %.3lf\n", triangleArea(figures[i].coords, perimeter / 2));
-            printf("\tintersects:\n"); printIntersections(figures, i, n);
+            printf("\tintersects:\n");
+            printIntersections(figures, i, n);
         }
         printf("\n");
     }

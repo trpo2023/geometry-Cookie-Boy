@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <parser.h>
 #include <lexer.h>
+#include <parser.h>
 
 void addSpaces(int n)
 {

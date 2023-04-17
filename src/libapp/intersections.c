@@ -1,8 +1,8 @@
 #include <math.h>
-#include <string.h>
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <parser.h>
 
@@ -20,14 +20,14 @@ int min(int a, int b)
     return b;
 }
 
-int area(Coords a, Coords b, Coords c) 
+int area(Coords a, Coords b, Coords c)
 {
-	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
- 
-bool boundingBox(int a, int b, int c, int d) 
+
+bool boundingBox(int a, int b, int c, int d)
 {
-	if (a > b)
+    if (a > b)
     {
         int temp = a;
         a = b;
@@ -39,7 +39,7 @@ bool boundingBox(int a, int b, int c, int d)
         c = d;
         d = temp;
     }
-	return max(a, c) <= min(b, d);
+    return max(a, c) <= min(b, d);
 }
 
 bool similarFigures(Figure current, Figure figure)
@@ -48,7 +48,8 @@ bool similarFigures(Figure current, Figure figure)
     Coords *s_coords = figure.coords;
     if (!strcmp(current.type, "circle"))
     {
-        double length = sqrt(pow(abs((f_coords[0].x - s_coords[0].x)), 2) + pow(abs((f_coords[0].y - s_coords[0].y)), 2));
+        double length =
+            sqrt(pow(abs((f_coords[0].x - s_coords[0].x)), 2) + pow(abs((f_coords[0].y - s_coords[0].y)), 2));
         double r_sum = f_coords[0].radius + s_coords[0].radius;
         return length < r_sum;
     }
@@ -62,8 +63,9 @@ bool similarFigures(Figure current, Figure figure)
             {
                 Coords c = figure.coords[j];
                 Coords d = figure.coords[j + 1];
-                if (boundingBox(a.x, b.x, c.x, d.x) && boundingBox(a.y, b.y, c.y, d.y) && (area(a, b, c) * area(a, b, d) <= 0) && (area(c, d, a) * area(c, d, b) <= 0))
-                return true;
+                if (boundingBox(a.x, b.x, c.x, d.x) && boundingBox(a.y, b.y, c.y, d.y) &&
+                    (area(a, b, c) * area(a, b, d) <= 0) && (area(c, d, a) * area(c, d, b) <= 0))
+                    return true;
             }
         }
     }
@@ -132,7 +134,7 @@ int getIntersections(Figure *figures, int current, int total)
                 if (differentFigures(figures[current], figures[i]))
                 {
                     figures[current].intersects[j] = i + 1;
-                    j++; 
+                    j++;
                 }
             }
         }
