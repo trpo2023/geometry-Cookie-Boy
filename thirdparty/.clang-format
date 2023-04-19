@@ -1,4 +1,6 @@
+# Format Style Options - Created with Clang Power Tools
 ---
+BasedOnStyle: Microsoft
 DisableFormat: true
 SortIncludes: false
 ...
