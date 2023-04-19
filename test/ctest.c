@@ -9,7 +9,7 @@
 #include <lexer.h>
 #include <parser.h>
 
-// Проверяет, сколько строк файла удалось прочитать
+// Проверяет сколько строк файла удалось прочитать
 CTEST(INPUT_FILE, CHECK_AMOUNT_STRINGS)
 {
     Figure figures[MIN_ELEMENTS];
@@ -128,4 +128,32 @@ CTEST(INPUT_FILE, CHECK_CIRCLE_AREA)
     char errmsg[MAX_ELEMENTS];
     readFile("data.txt", figures, errmsg);
     ASSERT_DBL_NEAR(M_PI * pow(figures[1].coords[0].radius, 2), circleArea(figures[1].coords));
+}
+
+// Проверка на правильное нахождение пересечений
+CTEST(FIGURE_SET, CHECK_INTERSECTIONS)
+{
+    Figure figures[MIN_ELEMENTS];
+    char errmsg[MAX_ELEMENTS];
+    int count = readFile("data.txt", figures, errmsg);
+    int triangles[] = {2, 0};
+    int circle[] = {1, 3, 0};
+    for (int i = 0; i < count; i++)
+    {
+        getIntersections(figures, i, count);
+        if (i == 1)
+        {
+            for (int j = 0; j < count; j++)
+            {
+                ASSERT_EQUAL(circle[j], figures[i].intersects[j]);
+            }
+        }
+        else
+        {
+            for (int j = 0; j < count - 1; j++)
+            {
+                ASSERT_EQUAL(triangles[j], figures[i].intersects[j]);
+            }
+        }
+    }
 }
