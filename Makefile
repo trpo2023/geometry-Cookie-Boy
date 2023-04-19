@@ -20,10 +20,13 @@ TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 
 APP_SRC = $(wildcard $(APP_DIR)/*.c) # Все файлы с расширением .c нужно найти в текущей директории
 LIB_SRC = $(wildcard $(LIB_DIR)/*.c)
+TEST_SRC = $(wildcard $(TEST_DIR)/*.c)
 APP_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(APP_SRC)) # Из .c заменяет в .o, SRC - какой список файлов
 LIB_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(LIB_SRC))
+TEST_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(TEST_SRC))
 APP_DEPS = $(patsubst $(APP_OBJ), $(OBJ_DIR)/%.d, $(APP_OBJ)) # Из .o заменяет в .d
 LIB_DEPS = $(patsubst $(LIB_OBJ), $(OBJ_DIR)/%.d, $(LIB_OBJ))
+TEST_DEPS = $(patsubst $(TEST_OBJ), $(OBJ_DIR)/%.d, $(TEST_OBJ))
 
 all: $(APP_PATH)
 
@@ -58,6 +61,6 @@ $(OBJ_DIR)/$(TEST_DIR)/ctest.o: $(TEST_DIR)/ctest.c
 format: 
 	clang-format -i --verbose $(APP_SRC) $(LIB_SRC)
 
--include $(LIB_DEPS) $(APP_DEPS)
+-include $(LIB_DEPS) $(APP_DEPS) $(TEST_DEPS)
 
 .PHONY: all run clean test format
