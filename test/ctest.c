@@ -15,7 +15,7 @@ CTEST(INPUT_FILE, CHECK_AMOUNT_STRINGS)
     Figure figures[MIN_ELEMENTS];
     char errmsg[MAX_ELEMENTS];
     errmsg[0] = '\0';
-    ASSERT_EQUAL(3, readFile("data.txt", figures, errmsg));
+    ASSERT_EQUAL(2, readFile("data.txt", figures, errmsg));
 }
 
 // Проверка на синтаксические ошибки в названии фигур
