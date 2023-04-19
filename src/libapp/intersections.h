@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdbool.h>
 #include <parser.h>
+#include <stdbool.h>
 
 int max(int, int);
 int min(int, int);
