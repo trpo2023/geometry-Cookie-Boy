@@ -1,7 +1,7 @@
 NAME_APP = app
 LIB_NAME = libapp.a
 TEST_NAME = $(NAME_APP)-test
-INPUT_FILE = data
+INPUT_FILE = data.txt
 
 CC = gcc
 CFLAGS = -Wall -Werror
@@ -20,6 +20,7 @@ TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 
 APP_SRC = $(wildcard $(APP_DIR)/*.c) # Все файлы с расширением .c нужно найти в текущей директории
 LIB_SRC = $(wildcard $(LIB_DIR)/*.c)
+TEST_SRC = $(wildcard $(TEST_DIR)/*.c)
 APP_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(APP_SRC)) # Из .c заменяет в .o, SRC - какой список файлов
 LIB_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(LIB_SRC))
 APP_DEPS = $(patsubst $(APP_OBJ), $(OBJ_DIR)/%.d, $(APP_OBJ)) # Из .o заменяет в .d
@@ -60,8 +61,8 @@ $(OBJ_DIR)/$(TEST_DIR)/ctest.o: $(TEST_DIR)/ctest.c
 	$(CC) $(CFLAGS) $(DEPSFLAGS) -I $(LIB_DIR) -I $(LIB_TEST_DIR) -c $< -o $@
 
 format: 
-	clang-format -i $(APP_SRC) $(LIB_SRC)
+	clang-format -i $(APP_SRC) $(LIB_SRC) $(TEST_SRC)
 
 -include $(LIB_DEPS) $(APP_DEPS) $(TEST_DEPS)
 
-.PHONY: all run clean test
+.PHONY: all run clean test format

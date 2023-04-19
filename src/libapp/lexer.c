@@ -232,16 +232,16 @@ int stringHandler(char *string, Figure *figure, char *errmsg)
             strcpy(figure->type, "circle");
             i = circleHandler(string, figure, errmsg);
             figure->name[i] = '\0';
-            if (strlen(errmsg) != 0)
+            if (strlen(errmsg))
                 return 1;
             return 0;
         }
-        if (!strcmp(figure->name, "triangle"))
+        else if (!strcmp(figure->name, "triangle"))
         {
             strcpy(figure->type, "triangle");
             i = triangleHandler(string, figure, errmsg);
             figure->name[i] = '\0';
-            if (strlen(errmsg) != 0)
+            if (strlen(errmsg))
                 return 1;
             return 0;
         }
