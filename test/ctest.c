@@ -4,6 +4,8 @@
 
 #define _USE_MATH_DEFINES // M_PI in math.h
 
+#include <calculations.h>
+#include <intersections.h>
 #include <lexer.h>
 #include <parser.h>
 
@@ -117,4 +119,13 @@ CTEST(TAKE_ELEMENTS, TAKE_VALUE)
         count++;
     }
     fclose(file);
+}
+
+// Проверяет правильно ли была найдена площадь окружности
+CTEST(INPUT_FILE, CHECK_CIRCLE_AREA)
+{
+    Figure figures[MIN_ELEMENTS];
+    char errmsg[MAX_ELEMENTS];
+    readFile("data.txt", figures, errmsg);
+    ASSERT_DBL_NEAR(M_PI * pow(figures[1].coords[0].radius, 2), circleArea(figures[1].coords));
 }
